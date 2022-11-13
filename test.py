@@ -41,11 +41,11 @@ import json
 import av
 from tqdm import tqdm
 
-# path = "path/to/ego4d/v1"
-# anno_path = path + "/annotations/fho_oscc-pnr_val.json"
-# video_path = path + "/full_scale"
-# clips = json.load(open(anno_path, "r"))["clips"]
-# for clip in tqdm(clips):
-#     video = video_path + "/"+ str(clip["video_uid"]) + ".mp4"
-#     container = av.open(video)
+path = "path/to/ego4d/v1"
+anno_path = path + "/annotations/fho_oscc-pnr_val.json"
+video_path = path + "/full_scale"
+clips = json.load(open(anno_path, "r"))["clips"]
+for clip in tqdm(clips):
+    video = video_path + "/"+ str(clip["video_uid"]) + ".mp4"
+    container = av.open(video)
 
