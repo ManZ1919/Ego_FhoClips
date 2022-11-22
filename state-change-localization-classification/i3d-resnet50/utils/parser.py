@@ -51,8 +51,10 @@ def load_config(args):
     print("cfg:", cfg)
     # Load config from cfg.
     if args.cfg_file is not None:
+        print(True)
         cfg.merge_from_file(args.cfg_file)
     # Load config from command line, overwrite config from opts.
     if args.opts is not None:
+        print(False)
         cfg.merge_from_list(args.opts)
     return cfg

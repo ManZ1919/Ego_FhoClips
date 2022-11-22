@@ -10,37 +10,39 @@ def state_change_accuracy(preds, labels):
         if pred_.item() == label.item():
             correct += 1
         total += 1
-    accuracy = correct/total
+    accuracy = correct / total
     return accuracy
 
 
 def keyframe_distance(
-    preds,
-    labels,
-    sc_preds,
-    sc_labels,
-    fps,
-    info,
-    evaluate_trained=False
-):
-    distance_list = list()
-    for pred, label, sc_pred, sc_label, ind_info, ind_fps in zip(
         preds,
         labels,
         sc_preds,
         sc_labels,
+        fps,
         info,
-        fps
+        evaluate_trained=False
+):
+    distance_list = list()
+    for pred, label, sc_pred, sc_label, ind_info, ind_fps in zip(
+            preds,
+            labels,
+            sc_preds,
+            sc_labels,
+            info,
+            fps
     ):
         if sc_label.item() == 1:
             keyframe_loc_pred = torch.argmax(pred).item()
-            keyframe_loc_pred_mapped = (
-                ind_info['clip_end_frame'] - ind_info['clip_start_frame']
-            ) / 16 * keyframe_loc_pred
+            print("ind_info:", ind_info)
+            print("ind_info['clip_end_sec']:", ind_info['clip_end_sec'])
+            print("ind_info['clip_start_sec']:", ind_info['clip_start_sec'])
+            # keyframe_loc_pred_mapped = (ind_info['clip_end_frame'] - ind_info['clip_start_frame']) / 16 * keyframe_loc_pred
+            keyframe_loc_pred_mapped = (ind_info['clip_end_sec'] - ind_info['clip_start_sec']) / 16 * keyframe_loc_pred
             keyframe_loc_pred_mapped = keyframe_loc_pred_mapped.item()
             gt = ind_info['pnr_frame'].item() - ind_info['clip_start_frame'].item()
             err_frame = abs(keyframe_loc_pred_mapped - gt)
-            err_sec = err_frame/fps.item()
+            err_sec = err_frame / fps.item()
             distance_list.append(err_sec)
     if len(distance_list) == 0:
         # If evaluating the trained model, use this

@@ -58,7 +58,7 @@ _C.DATA.NUM_FRAMES = 8
 _C.DATA.CROP_SIZE = 224
 
 # Task to be performed
-_C.DATA.TASK = "frame_detection_regression"
+_C.DATA.TASK = "state_change_detection_and_keyframe_localization"
 
 # ----------------------------------------------------------------------------
 # Training options
@@ -100,13 +100,13 @@ _C.TEST.VAL_JSON = 'fixed_val_set.json'
 _C.DATA_LOADER = CfgNode()
 
 # Number of data loader workers per training process
-_C.DATA_LOADER.NUM_WORKERS = 5
+_C.DATA_LOADER.NUM_WORKERS = 4
 
 # Load data to pinned host memory
 _C.DATA_LOADER.PIN_MEMORY = False
 
 # Shuffle the data
-_C.DATA_LOADER.SHUFFLE = True
+_C.DATA_LOADER.SHUFFLE = False
 
 # Drop the last batch
 _C.DATA_LOADER.DROP_LAST = True
@@ -123,7 +123,7 @@ _C.MISC = CfgNode()
 _C.MISC.CHECKPOINT_FILE_PATH = None
 
 # Path to save outputs from lightning's Trainer
-_C.MISC.OUTPUT_DIR = "/home/dml/PycharmProjects/Ego4D/Ego4dBenchmark/hands-and-objects/state-change-localization-classification/results"
+_C.MISC.OUTPUT_DIR = "/home/dml/GitCode/Ego4d_FHO/state-change-localization-classification/i3d-resnet50/results"
 
 # Number of GPUs to use
 _C.MISC.NUM_GPUS = 1
@@ -133,6 +133,7 @@ _C.MISC.NUM_SHARDS = 1
 
 # Whether to enable logging
 _C.MISC.ENABLE_LOGGING = True
+# _C.MISC.ENABLE_LOGGING = False
 
 # Run 1 train, val, and test batch for debugging
 _C.MISC.FAST_DEV_RUN = False
@@ -293,6 +294,7 @@ _C.SOLVER.NESTEROV = True
 # Default dp (Data Parallel)
 # https://pytorch-lightning.readthedocs.io/en/stable/advanced/multi_gpu.html
 _C.SOLVER.ACCELERATOR = "dp"
+# _C.SOLVER.ACCELERATOR = "gpu"
 
 # Learning rate policy
 _C.SOLVER.LR_POLICY = "cosine"
@@ -317,8 +319,8 @@ _C.JSON_EXPORT.SAVE_DIR = '/media/dml/e5afa40a-df1a-4c60-8623-87e2a51c3a09/ego4d
 # State change mapping jsons path
 # _C.JSON_EXPORT.SC_MAPPING = ('/home/sid/canonical_dataset/state-change-id-to-'
 #                                 'canonical-video-id-mapping-{}-2021-10-31.json')
-_C.JSON_EXPORT.SC_MAPPING = ('/home/dml/PycharmProjects/Ego4D/Ego4dBenchmark/hands-and-objects/state-change-id-to-'
-                                'canonical-video-id-mapping-{}-2022-11-1.json')
+_C.JSON_EXPORT.SC_MAPPING = ('/home/dml/GitCode/Ego4d_FHO/state-change-localization-classification/i3d-resnet50'
+                             '/results/state-change-id-to-canonical-video-id-mapping-{}-2022-11-1.json')
 
 # Mode in which to create the json files. Options are: ['train', 'test', 'val']
 _C.JSON_EXPORT.MODE = 'train'

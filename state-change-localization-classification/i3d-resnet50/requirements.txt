@@ -14,8 +14,8 @@ cloudpickle==1.6.0
 colorama==0.4.3
 cycler==0.10.0
 Cython==0.29.23
-decorator==4.4.2
-detectron2==0.4+cu110
+# decorator==4.4.2
+# detectron2==0.4+cu110
 docutils==0.15.2
 ffprobe==0.5
 fsspec==2021.4.0
@@ -63,7 +63,7 @@ pydot==1.4.2
 pyparsing==2.4.7
 pytest==6.2.3
 python-dateutil==2.8.1
-pytorch-lightning==1.2.10
+# pytorch-lightning==1.2.10
 pytz==2021.1
 pyxDamerauLevenshtein==1.7.0
 PyYAML==5.3.1
@@ -82,10 +82,10 @@ tensorboard-plugin-wit==1.8.0
 termcolor==1.1.0
 threadpoolctl==2.1.0
 toml==0.10.2
-torch==1.7.1
-torchaudio==0.7.0a0+a853dff
-torchmetrics==0.2.0
-torchvision==0.8.2
+# torch==1.7.1
+# torchaudio==0.7.0a0+a853dff
+# torchmetrics==0.2.0
+# torchvision==0.8.2
 tqdm==4.60.0
 urllib3==1.26.4
 Werkzeug==1.0.1

@@ -19,12 +19,17 @@ import os
 import itertools
 
 # data_folder = 'PATH_TO_DATA_FOLDER'
-data_folder = '/media/dml/e5afa40a-df1a-4c60-8623-87e2a51c3a09/ego4d/HO'
-for split in ["train", "val", "trainval", "test"]:
+data_folder = '/media/dml/e5afa40a-df1a-4c60-8623-87e2a51c3a09/dataset/ego4d/v1/'
+frames_folder = '/media/dml/e5afa40a-df1a-4c60-8623-87e2a51c3a09/dataset/ego4d/v1/positive_clips'
+# for split in ["train", "val", "trainval", "test"]:
+    # register_coco_instances(
+    #     f"ego4dv1_pnr_objects_{split}", {},
+    #     os.path.join(data_folder, 'coco_annotations', f"{split}.json"),
+    #     os.path.join(data_folder, "pre_pnr_post_frames"))
+for split in ["train", "val", "trainval"]:
     register_coco_instances(
         f"ego4dv1_pnr_objects_{split}", {},
-        os.path.join(data_folder, 'coco_annotations', f"{split}.json"),
-        os.path.join(data_folder, "pre_pnr_post_frames"))
+        os.path.join(data_folder, 'coco_annotations', f"{split}.json"),frames_folder)
 
 
 class Trainer(DefaultTrainer):
@@ -47,6 +52,7 @@ class Trainer(DefaultTrainer):
     @classmethod
     def build_train_loader(cls, cfg):
         if "Detr" == cfg.MODEL.META_ARCHITECTURE:
+            print("cfg:", cfg)
             mapper = DetrDatasetMapper(cfg, True)
         else:
             mapper = None

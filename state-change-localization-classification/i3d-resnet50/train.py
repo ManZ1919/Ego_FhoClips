@@ -1,14 +1,21 @@
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
+from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 import torch
 
 import utils.logging as logging
 from utils.parser import parse_args, load_config
 from tasks.keyframe_detection import StateChangeAndKeyframeLocalisation
+# from pytorch_lightning.callbacks import ModelCheckpoint
 
 # import cv2
 
 logger = logging.get_logger(__name__)
+
+def main_test(cfg):
+    TaskType = StateChangeAndKeyframeLocalisation
+    print("cfg:", cfg)
+    # task = TaskType(cfg)
 
 
 def main(cfg):
@@ -33,11 +40,12 @@ def main(cfg):
         }
 
     trainer = Trainer(
-        # gpus=cfg.MISC.NUM_GPUS,
-        gpus=0,
+        gpus=cfg.MISC.NUM_GPUS,
+        # gpus=0,
         num_nodes=cfg.MISC.NUM_SHARDS,
         accelerator=cfg.SOLVER.ACCELERATOR,
-        max_epochs=cfg.SOLVER.MAX_EPOCH,
+        # max_epochs=cfg.SOLVER.MAX_EPOCH,
+        max_epochs=15,
         num_sanity_val_steps=0,
         benchmark=True,
         replace_sampler_ddp=False,
@@ -62,6 +70,7 @@ def main(cfg):
 
     elif cfg.TEST.ENABLE:
         return trainer.test(task)
+
 
 
 if __name__ == "__main__":

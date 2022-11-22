@@ -16,7 +16,7 @@ class StateChangeAndKeyframeLocalisation(VideoTask):
 
     def training_step(self, batch, batch_idx):
         frames, labels, state_change_label, fps, info = batch
-        print("icons1:", frames, labels, state_change_label, fps, info)
+        # print("icons1:", frames, labels, state_change_label, fps, info)
         keyframe_preds, state_change_preds = self.forward(frames)
         keyframe_preds_ = keyframe_preds.permute(0, 2, 1)
 
@@ -38,14 +38,15 @@ class StateChangeAndKeyframeLocalisation(VideoTask):
             state_change_preds,
             state_change_label
         )
-        print("keyframe:", fps)
-        keyframe_avg_time_dist = keyframe_distance(
-            keyframe_preds,
-            labels,
-            state_change_preds,
-            state_change_label,
-            fps
-        )
+        # print("keyframe:", fps)
+        # keyframe_avg_time_dist = keyframe_distance(
+        #     keyframe_preds,
+        #     labels,
+        #     state_change_preds,
+        #     state_change_label,
+        #     fps,
+        #     info
+        # )
 
         return {
             "keyframe_loss": keyframe_loss,
@@ -53,12 +54,12 @@ class StateChangeAndKeyframeLocalisation(VideoTask):
             "train_loss": loss,
             "loss": loss,
             "state_change_metric_train": accuracy,
-            "keyframe_loc_metric_time_dist_train": keyframe_avg_time_dist
+            # "keyframe_loc_metric_time_dist_train": keyframe_avg_time_dist
         }
 
     def training_epoch_end(self, training_step_outputs):
         keys = [x for x in training_step_outputs[0].keys()]
-        print("icons2:", keys)
+        # print("icons2:", keys)
         for key in keys:
             metric = torch.Tensor.float(
                 torch.Tensor(
@@ -80,7 +81,8 @@ class StateChangeAndKeyframeLocalisation(VideoTask):
             labels,
             state_change_preds,
             state_change_label,
-            fps
+            fps,
+            info
         )
 
         return {
@@ -111,7 +113,8 @@ class StateChangeAndKeyframeLocalisation(VideoTask):
             labels,
             state_change_preds,
             state_change_label,
-            fps
+            fps,
+            info
         )
 
         return {

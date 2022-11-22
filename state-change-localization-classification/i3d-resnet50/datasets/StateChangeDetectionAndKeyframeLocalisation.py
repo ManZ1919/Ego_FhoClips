@@ -12,8 +12,9 @@ import cv2
 import torch
 import numpy as np
 from tqdm import tqdm
+
 from utils.trim import _get_frames
-from datasets.build_dataset import DATASET_REGISTRY
+from .build_dataset import DATASET_REGISTRY
 
 
 @DATASET_REGISTRY.register()
@@ -32,9 +33,9 @@ class StateChangeDetectionAndKeyframeLocalisation(torch.utils.data.Dataset):
         ], "Split `{}` not supported for Keyframe detection.".format(mode)
         self.mode = mode
         self.cfg = cfg
+        self.ann_path = os.path.join(cfg.DATA.ANN_DIR, f'fho_oscc-pnr_train.json')
         # self.ann_path = os.path.join(cfg.DATA.ANN_DIR, f'{self.mode}.json')
-        self.ann_path = '/media/dml/e5afa40a-df1a-4c60-8623-87e2a51c3a09/ego4d/new/v1/annotations/fho_oscc-pnr_train.json'
-        # print("path:", self.ann_path)
+        # self.ann_path = '/home/dml/GitCode/Ego4d_FHO/dataset/annotations/fho_oscc-pnr_train.json'
         ann_err_msg = f"Wrong annotation path provided {self.ann_path}"
         assert os.path.exists(self.ann_path), ann_err_msg
         self.video_dir = self.cfg.DATA.VIDEO_DIR_PATH
@@ -50,21 +51,11 @@ class StateChangeDetectionAndKeyframeLocalisation(torch.utils.data.Dataset):
     def _construct_loader(self):
         self.package = dict()
         self.ann_data = json.load(open(self.ann_path, 'r'))
-        # values_data = self.ann_data.values()
-        # keys_data = self.ann_data.keys()
-        # print("types:", type(self.ann_data))
-        # for i,j in self.ann_data.items():
-        #     print(i, j)
-        # print("values:", values_data)
-        # print(self.mode)
-        # print("keys:", keys_data)
-        # print(self.ann_data['clips'])
-        # for key in enumerate(self.ann_data):
-
+        # print("self.ann_data:", self.ann_data)
+        # for count, value in enumerate(
+        #     tqdm(self.ann_data, desc='Preparing data')
+        # ):
         for count, value in enumerate(tqdm(self.ann_data['clips'], desc='Preparing data')):
-        # for count, value in self.ann_data.items():
-        #     print("loader_count:", count)
-        #     print("loader_value:", value)
             clip_start_sec = value['parent_start_sec']
             clip_end_sec = value['parent_end_sec']
             clip_start_frame = value['parent_start_frame']
@@ -120,6 +111,7 @@ class StateChangeDetectionAndKeyframeLocalisation(torch.utils.data.Dataset):
             self.video_dir,
             info['video_id']
         )
+        print("pnr_frame:", info['pnr_frame'])
         if info['pnr_frame'] is not None:
             clip_save_path = os.path.join(self.positive_vid_dir, unique_id)
         else:
@@ -149,9 +141,6 @@ class StateChangeDetectionAndKeyframeLocalisation(torch.utils.data.Dataset):
         )
         desired_shorter_side = 384
         num_saved_frames = 0
-        # print("frames:", frames)
-        # print("frames_list:", frames_list)
-        # if frames is not None:
         for frame, frame_count in zip(frames, frames_list):
             original_height, original_width, _ = frame.shape
             if original_height < original_width:
@@ -191,9 +180,6 @@ class StateChangeDetectionAndKeyframeLocalisation(torch.utils.data.Dataset):
         print(f'Time taken: {time.time() - start}; {num_saved_frames} '
             f'frames saved; {clip_save_path}')
         return None
-        # else:
-        #     return None
-
 
     def _sample_frames(
         self,
@@ -251,9 +237,7 @@ class StateChangeDetectionAndKeyframeLocalisation(torch.utils.data.Dataset):
         Returns:
             frames (ndarray): Image as a numpy array
         """
-        # print("frame_path:", frame_path)
         frame = cv2.imread(frame_path)
-        # print("frame_now:", frame)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         frame = cv2.resize(frame,(
             self.cfg.DATA.CROP_SIZE,
@@ -348,24 +332,7 @@ class StateChangeDetectionAndKeyframeLocalisation(torch.utils.data.Dataset):
         Code for decoding the video
         """
         frames = list()
-        # print("path:", video_path)
-        # if os.path.exists(video_path+'.mp4'):
-        #     with av.open(video_path+'.mp4') as container:
-        #         for frame in _get_frames(
-        #                 frames_list,
-        #                 container,
-        #                 include_audio=False,
-        #                 audio_buffer_frames=0
-        #         ):
-        #             frame = frame.to_rgb().to_ndarray()
-        #             frames.append(frame)
-        #         # print("real_frames:", frames)
-        #     return frames
-        # else:
-        #     # print(False)
-        #     pass
-        with av.open(video_path+'.mp4') as container:
-        # with av.open(video_path) as container:
+        with av.open(video_path + '.mp4') as container:
             for frame in _get_frames(
                 frames_list,
                 container,
