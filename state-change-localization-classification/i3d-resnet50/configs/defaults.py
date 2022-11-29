@@ -106,7 +106,7 @@ _C.DATA_LOADER.NUM_WORKERS = 4
 _C.DATA_LOADER.PIN_MEMORY = False
 
 # Shuffle the data
-_C.DATA_LOADER.SHUFFLE = False
+_C.DATA_LOADER.SHUFFLE = True
 
 # Drop the last batch
 _C.DATA_LOADER.DROP_LAST = True
