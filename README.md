@@ -1,17 +1,7 @@
-**[NEW!] 2022 Ego4D Challenges now open for Hands And Objects**
-- [Object State Change Classification](https://eval.ai/web/challenges/challenge-page/1627/overview)
-- [PNR Temporal Localization](https://eval.ai/web/challenges/challenge-page/1622/overview)
-- [State Change Object Detection](https://eval.ai/web/challenges/challenge-page/1632/overview)
+
+# Ego4D Hands & Objects Benchmark Clip from i3dresnet
 
 
-
-# Ego4D Hands & Objects Benchmark
-
-[EGO4D](https://ego4d-data.org/docs/) is the world's largest egocentric (first person) video ML dataset and benchmark suite.
-
-For more information on Ego4D or to download the dataset, read: [Start Here](https://ego4d-data.org/docs/start-here/).
-
-The [Hands & Objects Benchmark](https://ego4d-data.org/docs/benchmarks/hands-and-objects/) aims to understand the camera-wearers present activity – in terms of interactions with objects.  This repository contains the code needed to reproduce the results in the [Ego4D: Around the World in 3,000 Hours of Egocentric Video](https://arxiv.org/abs/2110.07058).
 
 ## Task Definition
 
